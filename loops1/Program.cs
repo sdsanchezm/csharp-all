@@ -39,6 +39,35 @@ namespace loops1
                 Console.Write("\n");
             }
 
+            // Do While
+            bool runVerify1 = false;
+
+            do
+            {
+                Console.WriteLine("Wish to keep your app running? type 1 if so, 0 otherwise");
+                int appRunning = Convert.ToInt16(Console.ReadLine());
+                if (appRunning == 1)
+                {
+                    Console.WriteLine("The app is running");
+                    runVerify1 = true;
+                }
+                else if (appRunning == 0)
+                {
+                    Console.WriteLine("This is the last time this app is running");
+                    runVerify1 = false;
+                }
+                else
+                    Console.WriteLine("Invalid input, Try Again.");
+            } while (runVerify1 == true);
+
+            // While
+            int i1 = 0;
+            while (i1 < 5)
+            {
+                Console.WriteLine(i1);
+                i1++;
+            }
+
         }
     }
 }
