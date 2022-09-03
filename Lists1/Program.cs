@@ -29,6 +29,9 @@ namespace Lists1
                 Console.WriteLine(empanadaShopingList[empanada]);
             }
 
+            // Using ForEach
+            empanadaShopingList.ForEach((x) => Console.WriteLine(x));
+
         }
     }
 }

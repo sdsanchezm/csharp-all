@@ -21,6 +21,9 @@ namespace Arrays
                 Console.WriteLine($"item {i} {carBrands[i]}: {chessePrices[i]}");
             }
 
+            // Using ForEach
+            carBrands.ForEach((x) => Console.WriteLine(x));
+
         }
     }
 }
