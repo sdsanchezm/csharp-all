@@ -8,7 +8,12 @@ namespace SchoolAdminProject1
         static void Main(string[] args)
         {
             var school = new School("Kraus School", 2021);
-            Console.WriteLine(school.Name);
+            school.Country = "Germany";
+            school.City = "Berlin";
+            school.TypeOfSchool = TypesOfSchool.Secondary;
+            Console.WriteLine(school);
+
+            
         }
     }
 }

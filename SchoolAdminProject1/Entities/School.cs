@@ -22,16 +22,29 @@ namespace SchoolAdminProject1.Entities
         public string Country { get; set; }
         public string City { get; set; }
 
-        // this is the constructor: 
+        // This is an option but amny text can be used here so, there is another way to do it
+        // in order to avoid errors, the enumerators. 
+        public TypesOfSchool TypeOfSchool { get; set; }
+
+
+        // this is the constructor: (one of the ways to write it/define the constructor
         //public School(string name, int year)
         //{
         //    this.name = name;
         //    this.YearOfCreation = year;
         //}
 
+
         // another way to write the constructor
         // this is made by using 'igualacion por tuples' 
         public School(string name, int year) => (Name, YearOfCreation) = (name, year);
+
+        // Overriding a method, in this case the ToString Method: 
+        public override string ToString()
+        {
+            return $"Name: {name}, \nType of School: {TypeOfSchool} \nCountry: {Country} \nCity: {City}";
+        }
+
 
     }
 }
