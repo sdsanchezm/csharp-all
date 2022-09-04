@@ -68,6 +68,14 @@ namespace loops1
                 i1++;
             }
 
+            //var ListOfCourses = new int();
+            int[] ListOfCourses = { 1001, 3011, 6011, 2002};
+            // Foreach can also be used 
+            foreach (var item in ListOfCourses)
+            {
+                Console.WriteLine($"{item}");
+            }
+
         }
     }
 }

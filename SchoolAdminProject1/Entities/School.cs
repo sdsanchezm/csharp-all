@@ -8,42 +8,53 @@ namespace SchoolAdminProject1.Entities
 {
     class School
     {
-        // this is the ATTRIBUTE name
+        // ATTRIBUTE name here, repeat: ATTRIBUTE 
         string name;
 
-        // this is the PROPERTY that enables the getters and setters
+        // this PROPERTY enables getters and setters, just like this:
         public string Name
         { 
             get { return "Copy: " + name; }
             set { name = value.ToUpper();  }
         }
 
+        // This is called "Auto-Implemented Property"
         public int YearOfCreation { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
 
-        // This is an option but amny text can be used here so, there is another way to do it
+        // This is an option but any text can be used here (when it should be a few options) so, there is another way to do it
         // in order to avoid errors, the enumerators. 
         public TypesOfSchool TypeOfSchool { get; set; }
 
-
+        // Many constructors can be created, to use different parameters
         // this is the constructor: (one of the ways to write it/define the constructor
-        //public School(string name, int year)
-        //{
-        //    this.name = name;
-        //    this.YearOfCreation = year;
-        //}
-
+        public School(string name, int year, string city)
+        {
+            this.name = name;
+            this.YearOfCreation = year;
+        }
 
         // another way to write the constructor
         // this is made by using 'igualacion por tuples' 
         public School(string name, int year) => (Name, YearOfCreation) = (name, year);
 
+        // Another constructor
+        public School(string name, int year, TypesOfSchool type, string country="", string city="")
+        {
+            // country is an optional parameter
+            (Name, YearOfCreation) = (name, year);
+            Country = country;
+            City = city;
+        }
+
         // Overriding a method, in this case the ToString Method: 
         public override string ToString()
         {
-            return $"Name: {name}, \nType of School: {TypeOfSchool} \nCountry: {Country} \nCity: {City}";
+            return $"Name: \"{name}\", \nType of School: {TypeOfSchool} \nCountry: {Country} \nCity: {City}";
         }
+
+
 
 
     }
