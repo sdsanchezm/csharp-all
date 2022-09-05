@@ -36,6 +36,7 @@ namespace SchoolAdminProject2
                 new Course(){ CourseName = "course 403"}
             };
 
+            // this is a temporary course to test, first is declared and then added to the list
             Course tempcourse = new Course()
             {
                 CourseName = "vacational temp 001",
@@ -46,17 +47,47 @@ namespace SchoolAdminProject2
             // This way another collection is added to our list
             school.ListOfAllCourses.AddRange(otherCollection);
 
-            // Remove all members of the collection
-            //school.ListOfAllCourses.Clear();
+            // ====================== Remove all records from a collection: 
 
-            //school.ListOfAllCourses.Remove();
+            // Remove all members of the collection
+            //school.ListOfAllCourses.Clear(); // clear();
 
             PrintAllCourses(school);
 
+            // this is the has of a course 
+            Console.WriteLine($"Course.hash: {tempcourse.GetHashCode()}");
+            // this is how Remove() is used
             school.ListOfAllCourses.Remove(tempcourse);
 
-            PrintAllCourses(school); 
+            PrintAllCourses(school);
 
+            // Here removed the index 1
+            school.ListOfAllCourses.RemoveAt(1);
+
+            PrintAllCourses(school);
+
+            // this is how a Predicate is made, and 'Predicado' in this case is a method/function declared. 
+            Predicate<Course> functionPredicate1 = Predicado;
+            school.ListOfAllCourses.RemoveAll(functionPredicate1);
+
+            PrintAllCourses(school);
+
+            // using a delegate function 
+            school.ListOfAllCourses.RemoveAll(delegate(Course y) {
+                    return y.CourseName == "601";
+                });
+
+            // This is a lambda expression, like an arrow function
+            school.ListOfAllCourses.RemoveAll((x) => x.CourseName == "course 401" && (x.CourseJornada == TypeOfJornada.Afternoon) );
+
+
+            PrintAllCourses(school);
+
+        }
+
+        private static bool Predicado(Course obj) // this could have whatever object but 
+        {
+            return obj.CourseName == "course 403";
         }
 
         private static void PrintAllCourses(School school)
