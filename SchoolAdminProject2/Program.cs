@@ -85,6 +85,12 @@ namespace SchoolAdminProject2
 
         }
 
+        /// <summary>
+        /// This is the Predicado function created to test the RemoveAll method from the List
+        /// And this is a pretty cool way to add comments to describe methods in C#
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         private static bool Predicado(Course obj) // this could have whatever object but 
         {
             return obj.CourseName == "course 403";
