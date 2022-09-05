@@ -27,6 +27,8 @@ namespace SchoolAdminProject1.Entities
         // in order to avoid errors, the enumerators. 
         public TypesOfSchool TypeOfSchool { get; set; }
 
+        public Course[] ListOfAllCourses { get; set; }
+
         // Many constructors can be created, to use different parameters
         // this is the constructor: (one of the ways to write it/define the constructor
         public School(string name, int year, string city)
