@@ -12,6 +12,9 @@ namespace CoreSchool.Entities
         public string CourseName { get; set; }
         public TypeOfJornada CourseJornada { get; set; }
 
+        public List<Subject> Subjects { get; set; }
+        public List<Student> Students { get; set; }
+
         public Course()
         {
             CourseId = Guid.NewGuid().ToString();

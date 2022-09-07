@@ -22,10 +22,12 @@ namespace CoreSchool
 
         private static void PrintAllCourses(School school)
         {
-            Printer.DrawTitle("SCHOOL DETAILS");
+            Printer.DrawTitle($"SCHOOL: {school.Name}");
 
             if (school?.ListOfAllCourses != null) // this is another option, ListofAllCourses will not be validated until school is validated and not null
             {
+                Console.WriteLine($"Schoolid: {school.SchoolId}");
+
                 foreach (var course in school.ListOfAllCourses)
                 {
                     Console.WriteLine($"Course name: {course.CourseName} - id: {course.CourseId}");

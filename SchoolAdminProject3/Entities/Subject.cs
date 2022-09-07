@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CoreSchool.Entities
 {
-    public class Student
+    public class Subject
     {
-        public string StudentId { get; set; }
+        public string SubjectId { get; set; }
         public string StudentName { get; set; }
 
-        private Student() => StudentId = Guid.NewGuid().ToString();
+        private Subject() => SubjectId = Guid.NewGuid().ToString();
     }
 }

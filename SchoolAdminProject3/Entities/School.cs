@@ -5,6 +5,8 @@ namespace CoreSchool.Entities
 {
     public class School
     {
+        public string SchoolId { get; set; } = Guid.NewGuid().ToString();
+
         string name;
 
         public string Name
