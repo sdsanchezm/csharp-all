@@ -11,6 +11,6 @@ namespace CoreSchool.Entities
         public string StudentId { get; set; }
         public string StudentName { get; set; }
 
-        private Student() => StudentId = Guid.NewGuid().ToString();
+        public Student() => StudentId = Guid.NewGuid().ToString();
     }
 }

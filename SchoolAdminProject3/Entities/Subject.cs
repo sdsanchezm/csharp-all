@@ -9,8 +9,8 @@ namespace CoreSchool.Entities
     public class Subject
     {
         public string SubjectId { get; set; }
-        public string StudentName { get; set; }
+        public string SubjectName { get; set; }
 
-        private Subject() => SubjectId = Guid.NewGuid().ToString();
+        public Subject() => SubjectId = Guid.NewGuid().ToString();
     }
 }

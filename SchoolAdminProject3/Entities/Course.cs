@@ -15,11 +15,12 @@ namespace CoreSchool.Entities
         public List<Subject> Subjects { get; set; }
         public List<Student> Students { get; set; }
 
-        public Course()
-        {
-            CourseId = Guid.NewGuid().ToString();
-        }
+        //public Course()
+        //{
+        //    CourseId = Guid.NewGuid().ToString();
+        //}
 
+        public Course() => CourseId = Guid.NewGuid().ToString();
         
 
     }
