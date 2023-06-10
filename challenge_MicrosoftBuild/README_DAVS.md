@@ -75,4 +75,5 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 - Find outdated packages: `dotnet list package --outdated`
 - Find pre-releases: `dotnet list package --outdated --include-prerelease`
 - Install a specific version `dotnet add package Humanizer --version 2.11.10`
+- Build application without the debigin configuration `dotnet run --configuration Release`
 - 
