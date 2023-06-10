@@ -30,9 +30,9 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 - [https://learn.microsoft.com/en-us/dotnet/core/tools/#cli-commands](https://learn.microsoft.com/en-us/dotnet/core/tools/#cli-commands)
 - `dotnet new page --name PizzaList --namespace ContosoPizza.Pages --output Pages`
 - null safety [https://learn.microsoft.com/en-us/training/modules/csharp-null-safety/](https://learn.microsoft.com/en-us/training/modules/csharp-null-safety/)
-- dotnet --list-sdks
-- dotnet new webapi -f net6.0
-- dotnet run
+- Lsit all sdks available/installed `dotnet --list-sdks`
+- Create and API basic `dotnet new webapi -f net6.0`
+- `dotnet run`
 
 ## from "Create a web API with ASP.NET Core controllers"
 - Install the certificate: `dotnet dev-certs https --trust` from [https://learn.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-7.0&tabs=visual-studio%2Clinux-ubuntu#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos](https://learn.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-7.0&tabs=visual-studio%2Clinux-ubuntu#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos)
@@ -41,7 +41,7 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 	- connect https://localhost:{PORT}
 - `dotnet build`
 - POST in httprepl https://localhost:{PORT}
-	- post -c "{"name":"Hawaii", "isGlutenFree":false}"
+	- `post -c "{"name":"Hawaii", "isGlutenFree":false}"`
 - GET in httprepl https://localhost:{PORT}
 	- `get` and `ls` and `get 1`
 - DELETE in httprepl https://localhost:{PORT}
@@ -63,7 +63,8 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 - the notation will be: `[2.1]`.
 	- there is also: `1.0`, `(1.0,)`, `[1.0]`, `(,1.0])`, `(,1.0)`, `[1.0,2.0]`, `(1.0,2.0)`, `[1.0,2.0)` following the same regular math syntax
 	- Examples:
-		- ```
+		- 
+		```
 		<!-- Accepts any version 6.1 and later. -->
 		<PackageReference Include="ExamplePackage" Version="6.1" />
 
@@ -77,3 +78,17 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 - Install a specific version `dotnet add package Humanizer --version 2.11.10`
 - Build application without the debigin configuration `dotnet run --configuration Release`
 - 
+
+
+
+
+
+## Create dotnet aplications from scratch
+
+- application templates:
+	- Console app `dotnet new console -f net6.0`
+	- Webapi app `dotnet new console -f net6.0`
+	- Add a new console project `dotnet new console -f net6.0 -n learning-dotnet-files -o .`
+
+
+
