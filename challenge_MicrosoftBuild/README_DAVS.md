@@ -78,9 +78,25 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 - Install a specific version `dotnet add package Humanizer --version 2.11.10`
 - Build application without the debigin configuration `dotnet run --configuration Release`
 - Adding a package: `dotnet add package Newtonsoft.Json`
-- 
 
 
+## working with Blazor
+- composed of reusable web UI components built using C#, HTML, and CSS
+- uses:
+	- Server side code that handles UI interactions over a WebSocket connection
+	- Client side web app that runs directly in the browser via WebAssembly
+	- 
+- Razor: Razor is based on ASP.NET and designed for creating web apps
+- Code goes into `@()` or `@code` and `@functions` for methods and properties
+	- Example of function:
+	```
+	 @foreach (var todo in todos)
+	 {
+		<li>@todo.title</li>
+	 }
+	```
+- The `@Page` identifies a page, example `@page "/"`
+- The `@bind` markup binds a c# variable to an html object
 
 
 
@@ -90,6 +106,9 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 	- Console app `dotnet new console -f net6.0`
 	- Webapi app `dotnet new console -f net6.0`
 	- Add a new console project `dotnet new console -f net6.0 -n learning-dotnet-files -o .`
+	- Blazor App create: `dotnet new blazorserver -f net6.0`
+		- Create a razor component inside of a Blazor app `dotnet new razorcomponent -n Todo -o Pages`
+	
 
 
 
