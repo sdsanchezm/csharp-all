@@ -1,5 +1,7 @@
 ﻿using System.IO;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 
 // See https://aka.ms/new-console-template for more information
 Console.WriteLine("working with file system");
@@ -70,3 +72,114 @@ string fileName = $"stores{Path.DirectorySeparatorChar}201{Path.DirectorySeparat
 FileInfo info = new FileInfo(fileName);
 Console.WriteLine($"Full Name: {info.FullName}{Environment.NewLine}Directory: {info.Directory}{Environment.NewLine}Extension: {info.Extension}{Environment.NewLine}Create Date: {info.CreationTime}");
 
+// check if a dir exists:
+// bool doesDirectoryExist = Directory.Exists(filePath);
+bool doesDirectoryExist = Directory.Exists("stores");
+Console.WriteLine(doesDirectoryExist);
+
+// create directory newDir in the folder: stores/201
+Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "stores","201","newDir"));
+
+// Create Files:
+File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "greeting.txt"), "Hallo Welt!!");
+
+// Exercies:
+// get the current dir:
+var currentDirectory = Directory.GetCurrentDirectory();
+// add the stores folder to the variable storesDirectory
+var storesDirectory = Path.Combine(currentDirectory, "stores");
+// add the stores folder to the variable salesTotalDir:s
+var salesTotalDir = Path.Combine(currentDirectory, "salesTotalDir");
+// create tje salesTotalDir directory
+Directory.CreateDirectory(salesTotalDir);
+// find files within storesDirectory
+// var salesFiles = FindFiles(storesDirectory);
+// create the totals.txt file and include an empty string within it. 
+File.WriteAllText(Path.Combine(salesTotalDir, "totals.txt"), String.Empty);
+
+// Read files:
+File.ReadAllText($"stores{Path.DirectorySeparatorChar}201{Path.DirectorySeparatorChar}sales.json");
+Console.WriteLine(File.ReadAllText($"stores{Path.DirectorySeparatorChar}201{Path.DirectorySeparatorChar}sales.json"));
+
+// Read the text from a specific file
+var salesJson = File.ReadAllText($"stores{Path.DirectorySeparatorChar}201{Path.DirectorySeparatorChar}sales.json");
+// Deserialize, using the newtonsoft library
+var salesData = JsonConvert.DeserializeObject<SalesTotal>(salesJson);
+// print the total (only the number), because it's a json object with in the .json file
+Console.WriteLine(salesData.Total);
+
+
+
+
+var data1 = JsonConvert.DeserializeObject<SalesTotal>(salesJson);
+
+File.WriteAllText($"salesTotalDir{Path.DirectorySeparatorChar}totals.txt", data1.Total.ToString());
+
+System.Console.WriteLine("the end");
+
+var data2 = JsonConvert.DeserializeObject<SalesTotal>(salesJson);
+
+File.AppendAllText($"salesTotalDir{Path.DirectorySeparatorChar}totals.txt", $"{data2.Total}{Environment.NewLine}");
+
+
+
+// ==
+
+currentDirectory = Directory.GetCurrentDirectory();
+var storesDir = Path.Combine(currentDirectory, "stores");
+
+salesTotalDir = Path.Combine(currentDirectory, "salesTotalDir");
+Directory.CreateDirectory(salesTotalDir);
+
+salesFiles = FindFiles2(storesDir);
+
+var salesTotal = CalculateSalesTotal(salesFiles);
+
+File.AppendAllText(Path.Combine(salesTotalDir, "totals.txt"), $"{salesTotal}{Environment.NewLine}");
+
+IEnumerable<string> FindFiles2(string folderName)
+{
+    List<string> salesFiles = new List<string>();
+
+    var foundFiles = Directory.EnumerateFiles(folderName, "*", SearchOption.AllDirectories);
+
+    foreach (var file in foundFiles)
+    {
+        var extension = Path.GetExtension(file);
+        if (extension == ".json")
+        {
+            salesFiles.Add(file);
+        }
+    }
+
+    return salesFiles;
+}
+
+double CalculateSalesTotal(IEnumerable<string> salesFiles)
+{
+    double salesTotal = 0;
+
+    // READ FILES LOOP
+    // Loop over each file path in salesFiles
+    foreach (var file in salesFiles)
+    {      
+        // Read the contents of the file
+        string salesJson = File.ReadAllText(file);
+
+        // Parse the contents as JSON
+        SalesData? data = JsonConvert.DeserializeObject<SalesData?>(salesJson);
+
+        // Add the amount found in the Total field to the salesTotal variable
+        salesTotal += data?.Total ?? 0;
+    }
+
+    return salesTotal;
+}
+
+
+class SalesTotal
+{
+  public double Total { get; set; }
+}
+
+record SalesData (double Total);
