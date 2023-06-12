@@ -123,7 +123,7 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 	- Sharing information with other components by using component parameters
 	- Share information by using cascading parameters
 	- Share information by using AppState
-- 
+- pass
 
 
 
