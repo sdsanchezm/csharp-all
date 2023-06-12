@@ -97,6 +97,33 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 	```
 - The `@Page` identifies a page, example `@page "/"`
 - The `@bind` markup binds a c# variable to an html object
+- 2 hosting models *Blazor Server* and *Blazor WebAssembly*
+- In Blazor the UI contain components and each one can contain a mix of HTML and C# code.
+- components use the *Razor syntax* and the .razor extension
+- razor syntax embeed .NET code into webpages, razor can be used in ASP.NET MVC applications, and files will have the `.cshtml` extension.
+- Example of a Blazor component:
+```
+@page "/index"
+
+<h1>Welcome to Blazing Pizza</h1>
+
+<p>@welcomeMessage</p>
+
+@code {
+  private string welcomeMessage = "However you like your pizzas, we can deliver them blazing fast!";
+}
+```
+- Adding Entity Framework to work with the DB:
+```
+	dotnet add package Microsoft.EntityFrameworkCore --version 6.0.8
+	dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 6.0.8
+	dotnet add package System.Net.Http.Json --version 6.0.0
+```
+- Data sharing among components
+	- Sharing information with other components by using component parameters
+	- Share information by using cascading parameters
+	- Share information by using AppState
+- 
 
 
 
@@ -108,7 +135,9 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 	- Add a new console project `dotnet new console -f net6.0 -n learning-dotnet-files -o .`
 	- Blazor App create: `dotnet new blazorserver -f net6.0`
 		- Create a razor component inside of a Blazor app `dotnet new razorcomponent -n Todo -o Pages`
-	
-
+	- To create a blazor app (using the blazorserver template): `dotnet new blazorserver -o BlazingPizzaSite -f net6.0`
+		- To create a new component in an existing blazor app: `dotnet new razorcomponent -n PizzaBrowser -o Pages -f net6.0` (`-n` name, `-o` folder `-f` version of dotnet)
+	- To create a new blazor server project with no https: `dotnet new blazorserver -o BlazingPizza --no-https true -f net6.0`
+	- 
 
 
