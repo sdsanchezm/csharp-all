@@ -140,4 +140,9 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 	- To create a new blazor server project with no https: `dotnet new blazorserver -o BlazingPizza --no-https true -f net6.0`
 	- 
 
+## Folders Organization
+
+- MS learning path: *"Use pages, routing, and layouts to improve Blazor navigation"*
+	- [https://learn.microsoft.com/en-us/training/modules/use-pages-routing-layouts-control-blazor-navigation/?WT.mc_id=cloudskillschallenge_150aae80-e46b-4a07-894a-5247fcdfcbad](https://learn.microsoft.com/en-us/training/modules/use-pages-routing-layouts-control-blazor-navigation/?WT.mc_id=cloudskillschallenge_150aae80-e46b-4a07-894a-5247fcdfcbad)
+- pass
 
