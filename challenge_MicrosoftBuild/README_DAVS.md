@@ -1,26 +1,11 @@
 # Notes
 
+## General Public Note
 
-A Models folder was added to the project.
+- **The code in this forlder is for educational purposes only, I a not the author/creator, I use these multiple folders to track the learning process. The owners are their respective creators. **
 
-The model folder contains a Pizza class that represents a pizza.
 
-A Data folder was added to the project.
-
-The data folder contains a PizzaContext class that represents the database context. It inherits from the DbContext class from Entity Framework Core. Entity Framework Core is an object-relational mapper (ORM) that makes it easier to work with databases.
-
-A Services folder was added to the project.
-The services folder contains a PizzaService class that exposes methods to list and add pizzas.
-The PizzaService class uses the PizzaContext class to read and write pizzas to the database.
-The class is registered for dependency injection in Program.cs (line 10).
-Entity Framework Core generated a few things, too:
-
-A Migrations folder was generated.
-The migrations folder contains code to create the database schema.
-The SQLite database file ContosoPizza.db was generated.
-If you have the SQLite extension installed (or you're using GitHub Codespaces), you can view the database by right-clicking the file and selecting Open Database. The database schema is shown in the SQLite Explorer tab of the Explorer pane.
-
-# Commands
+## Commands
 
 - `dotnet new webapp`
 - `dotnet watch`
@@ -146,3 +131,109 @@ If you have the SQLite extension installed (or you're using GitHub Codespaces), 
 	- [https://learn.microsoft.com/en-us/training/modules/use-pages-routing-layouts-control-blazor-navigation/?WT.mc_id=cloudskillschallenge_150aae80-e46b-4a07-894a-5247fcdfcbad](https://learn.microsoft.com/en-us/training/modules/use-pages-routing-layouts-control-blazor-navigation/?WT.mc_id=cloudskillschallenge_150aae80-e46b-4a07-894a-5247fcdfcbad)
 - pass
 
+
+
+## Topics from the challenge and folders
+
+1. Write your first C# code
+2. Get started with web development using Visual Studio Code
+3. Learn the basics of web accessibility
+4. Create a web UI with ASP.NET Core
+5. Create a web API with ASP.NET Core controllers
+6. Publish a web app to Azure with Visual Studio
+7. Introduction to .NET
+8. Create a new .NET project and work with dependencies
+9. Interactively debug .NET apps with the Visual Studio Code debugger
+10. Work with files and directories in a .NET app
+11. Introduction to Web Development with Blazor
+	- code folder: ``
+	- documents folder: `11_Introduction_to_Web Development with Blazor`
+
+12. Build a web app with Blazor
+	- code folder: ``
+	- documents folder: `12_Build_a_web_app_with_Blazor`
+
+13. Interact with data in Blazor web apps
+	- code folder: ``
+	- documents folder: `13_Interact_with_data_in Blazor web apps`
+
+14. Use pages, routing, and layouts to improve Blazor navigation
+	- code folder: ``
+	- documents folder: ``
+
+15. Improve how forms and validation work in Blazor web apps
+	- code folder: ``
+	- documents folder: ``
+
+16. Build rich interactive components with Blazor web apps
+	- code folder: `blazorJavascriptIntegration/`
+	- document folder: `16_Build_rich_interactive_components`
+
+17. Build reusable components with Blazor
+	- code folder: ``
+	- documents folder: ``
+
+18. Build Connect Four game with Blazor
+	- code folder: ``
+	- documents folder: ``
+
+19. Externalize the configuration of an ASP.NET app by using an Azure key vault
+	- code folder: ``
+	- documents folder: ``
+
+20. Implement logging in a .NET Framework ASP.NET web application
+	- code folder: ``
+	- documents folder: ``
+
+21. Improve session scalability in a .NET Framework ASP.NET web application by using Azure Cache for Redis
+	- code folder: ``
+	- documents folder: ``
+
+22. Build a web API with minimal API, ASP.NET Core, and .NET
+	- code folder: ``
+	- documents folder: ``
+
+23. Use a database with minimal API, Entity Framework Core, and ASP.NET Core
+	- code folder: ``
+	- documents folder: ``
+
+24. Create a full stack application by using React and minimal API for ASP.NET Core
+	- code folder: ``
+	- documents folder: ``
+
+25. Build your first microservice with .NET
+	- code folder: ``
+	- documents folder: ``
+
+26. Deploy a .NET microservice to Kubernetes
+	- code folder: ``
+	- documents folder: ``
+
+27. Create and deploy a cloud-native ASP.NET Core microservice
+	- code folder: ``
+	- documents folder: ``
+
+28. Implement resiliency in a cloud-native ASP.NET Core microservice
+	- code folder: ``
+	- documents folder: ``
+
+29. Instrument a cloud-native ASP.NET Core microservice
+	- code folder: ``
+	- documents folder: ``
+
+30. Implement feature flags in a cloud-native ASP.NET Core microservices app
+	- code folder: ``
+	- documents folder: ``
+
+31. Use managed data stores in a cloud-native ASP.NET Core microservices app
+	- code folder: ``
+	- documents folder: ``
+
+32. Understand API gateways in a cloud-native ASP.NET Core microservices app
+	- code folder: ``
+	- documents folder: ``
+
+33. Deploy a cloud-native ASP.NET Core microservice with GitHub Actions
+	- code folder: ``
+	- documents folder: ``
+	
