@@ -4,6 +4,22 @@
 
 - **The code in this forlder is for educational purposes only, I a not the author/creator, I use these multiple folders to track the learning process. The owners are their respective creators. **
 
+## Blazor
+
+- Razor is an ASP.NET programming syntax, which helps you mix HTML syntax with C# code.
+- The formatting of HTML and CSS, using the Razor template language.
+- the components of the web pages can be managed with C# code that runs on a server or in the browser using a web standard technology called WebAssembly.
+- WebAssembly is a standard technology available in every modern browser that allows code to run, similar to JavaScript, in a browser.
+- Example:
+```
+<div>@product.Name</div>
+
+@code {
+  Product product = new Product{ Name = "Blazor" }
+}
+```
+- asd
+
 
 ## Commands
 
@@ -175,7 +191,7 @@
 
 18. Build Connect Four game with Blazor
 	- code folder: ``
-	- documents folder: ``
+	- documents folder: `18_Build_Connect_Four_game_with_Blazor`
 
 19. Externalize the configuration of an ASP.NET app by using an Azure key vault
 	- code folder: ``
