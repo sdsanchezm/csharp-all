@@ -139,7 +139,8 @@
 	- To create a blazor app (using the blazorserver template): `dotnet new blazorserver -o BlazingPizzaSite -f net6.0`
 		- To create a new component in an existing blazor app: `dotnet new razorcomponent -n PizzaBrowser -o Pages -f net6.0` (`-n` name, `-o` folder `-f` version of dotnet)
 	- To create a new blazor server project with no https: `dotnet new blazorserver -o BlazingPizza --no-https true -f net6.0`
-	- 
+	- To create an API with minimal API:
+		- `dotnet new web -o MegaStoreWhatever -f net6.0`
 
 ## Folders Organization
 
@@ -190,7 +191,7 @@
 	- documents folder: ``
 
 18. Build Connect Four game with Blazor
-	- code folder: ``
+	- code folder: `blazorUnit18_ConnectFourGame`
 	- documents folder: `18_Build_Connect_Four_game_with_Blazor`
 
 19. Externalize the configuration of an ASP.NET app by using an Azure key vault
@@ -207,7 +208,7 @@
 
 22. Build a web API with minimal API, ASP.NET Core, and .NET
 	- code folder: ``
-	- documents folder: ``
+	- documents folder: `22_Build_API_w_minimal_API_ASPNET_Core_and_NET`
 
 23. Use a database with minimal API, Entity Framework Core, and ASP.NET Core
 	- code folder: ``
