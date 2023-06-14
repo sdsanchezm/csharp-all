@@ -38,6 +38,59 @@
 - Create and API basic `dotnet new webapi -f net6.0`
 - `dotnet run`
 
+## From EF Core
+
+- EF Core is a lightweight, extensible, open source, and cross-platform data access technology for .NET applications.
+- EF Core supports a large number of popular databases, including:
+	- SQLite
+	- MySQL
+	- PostgreSQL
+	- Oracle
+	- Microsoft SQL Server
+- Query data:
+	- `var pizzas = await db.Pizzas.ToListAsync();`
+- Insert Data
+	- 
+	```
+	await db.pizzas.AddAsync(
+    new Pizza { ID = 1, Name = "Pepperoni", Description = "The classic pepperoni pizza" });
+	```
+- Delete data:
+	- 
+	```
+	var pizza = await db.pizzas.FindAsync(id);
+	if (pizza is null)
+	{
+		//Handle error
+	}
+	db.pizzas.Remove(pizza);
+	```
+- Delete Data:
+	- 
+	```
+	int id = 1;
+	var updatepizza = new Pizza { Name = "Pineapple", Description = "Ummmm?" })
+	var pizza = await db.pizzas.FindAsync(id);
+	if (pizza is null)
+	{
+		//Handle error
+	}
+	pizza.Item = updatepizza.Item;
+	pizza.IsComplete = updatepizza.IsComplete;
+	await db.SaveChangesAsync();
+	```
+- DbContext represents a connection or session that's used to query and save instances of entities in a database.
+- To use it, add `using Microsoft.EntityFrameworkCore;` at the top of files
+- First: create a migration:
+	- `dotnet ef migrations add InitialCreate`
+	- Before, might need to install `dotnet-ef`
+		- `dotnet tool install --global dotnet-ef`
+- To undo/remove a migration
+	- `dotnet ef migrations add InitialCreate`
+- Second: Run the update database command:
+	- `dotnet ef database update`
+
+
 ## from "Create a web API with ASP.NET Core controllers"
 - Install the certificate: `dotnet dev-certs https --trust` from [https://learn.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-7.0&tabs=visual-studio%2Clinux-ubuntu#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos](https://learn.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-7.0&tabs=visual-studio%2Clinux-ubuntu#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos)
 - Install repl `dotnet tool install -g Microsoft.dotnet-httprepl`
@@ -131,7 +184,7 @@
 
 
 
-## Create dotnet aplications from scratch
+## Create dotnet aplications and adding some packages from terminal
 
 - application templates:
 	- Console app `dotnet new console -f net6.0`
@@ -147,6 +200,16 @@
 		- `dotnet new web -o MegaStoreWhatever -f net6.0`
 	- To install Swagger (Swashbuckle):
 		- `dotnet add package Swashbuckle.AspNetCore --version 6.1.4`
+		- `dotnet add package Swashbuckle.AspNetCore --version 6.2.3`
+	- To install EF (Entity Framework):
+		- `dotnet add package Microsoft.EntityFrameworkCore.InMemory --version 6.0`
+	- To install EF to work with SQLite
+		- `dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 6.0`
+	- To install EF Core Tools (globally)
+		- `dotnet tool install --global dotnet-ef`
+	- To install EF Design:
+		- `dotnet add package Microsoft.EntityFrameworkCore.Design --version 6.0`
+
 
 
 
@@ -220,11 +283,11 @@
 
 23. Use a database with minimal API, Entity Framework Core, and ASP.NET Core
 	- code folder: ``
-	- documents folder: ``
+	- documents folder: `23_db_w_minimal_API_Entity_Framework_ASP_NETCore`
 
 24. Create a full stack application by using React and minimal API for ASP.NET Core
 	- code folder: ``
-	- documents folder: ``
+	- documents folder: `24_full_stack_app_w_React_n_minimal_API_ASPNETCore`
 
 25. Build your first microservice with .NET
 	- code folder: ``
