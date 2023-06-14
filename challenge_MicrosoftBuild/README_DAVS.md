@@ -18,7 +18,10 @@
   Product product = new Product{ Name = "Blazor" }
 }
 ```
-- asd
+- Swagger implements the OpenAPI specification.
+	- This format describes your routes but also what data they accept and produce.
+	- Swagger UI is a collection of tools that render the OpenAPI specification as a website and let you interact with your API via the website.
+	- asd
 
 
 ## Commands
@@ -138,9 +141,14 @@
 		- Create a razor component inside of a Blazor app `dotnet new razorcomponent -n Todo -o Pages`
 	- To create a blazor app (using the blazorserver template): `dotnet new blazorserver -o BlazingPizzaSite -f net6.0`
 		- To create a new component in an existing blazor app: `dotnet new razorcomponent -n PizzaBrowser -o Pages -f net6.0` (`-n` name, `-o` folder `-f` version of dotnet)
-	- To create a new blazor server project with no https: `dotnet new blazorserver -o BlazingPizza --no-https true -f net6.0`
+	- To create a new blazor server project with no https: 
+		- `dotnet new blazorserver -o BlazingPizza --no-https true -f net6.0`
 	- To create an API with minimal API:
 		- `dotnet new web -o MegaStoreWhatever -f net6.0`
+	- To install Swagger (Swashbuckle):
+		- `dotnet add package Swashbuckle.AspNetCore --version 6.1.4`
+
+
 
 ## Folders Organization
 
@@ -207,7 +215,7 @@
 	- documents folder: ``
 
 22. Build a web API with minimal API, ASP.NET Core, and .NET
-	- code folder: ``
+	- code folder: `minimalAPI_unit22`
 	- documents folder: `22_Build_API_w_minimal_API_ASPNET_Core_and_NET`
 
 23. Use a database with minimal API, Entity Framework Core, and ASP.NET Core
