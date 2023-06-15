@@ -91,7 +91,71 @@
 	- `dotnet ef database update`
 
 
+## Planning the app and some API design considerations
+
+- Ask questions:
+	- How will the user be working with these features?
+	- What layout do I need?
+	- What's the user's interaction flow?
+- General logic:
+	- CRUD (how users are gonna Read, Create, Delete and Update Records)
+- Describe an API:
+- 
+```
+GET    /pizzas
+GET    /pizzas/1
+POST   /pizzas
+PUT    /pizzas/1
+PATCH  /pizzas/1
+DELETE /pizzas/1
+```
+- This in the package.json in npm `"proxy": "http://localhost:5000"` allows to proxy and reduce the way reactJs work with the server when fetching apis
+	- Instead of `https://localhost:3000/pizzas` it will be `/api/pizzas`
+- CORS is a protocol that allows a back end to accept requests from domains other than the one it's currently running on.
+
+
+### Cors in C#
+- code in C#:
+```
+// 1) define a unique string
+readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+// 2) define allowed domains, in this case "http://example.com" and "*" = all
+//    domains, for testing purposes only.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+      builder =>
+      {
+          builder.WithOrigins(
+            "http://example.com", "*");
+      });
+});
+// 3) use the capability
+app.UseCors(MyAllowSpecificOrigins);
+```
+### npm mocking api considerations
+
+- the package `json-server` allows to mock an api from a file
+	- `npx json-server --watch --port 5000 db.json`
+- The command `"proxy": "http://localhost:5000",`  in `package.json` allows to short the address to fetch in javasript (in React specifically).
+- Then `npm start` to start
+
+### api in dotnet
+
+- clone the project where the api is stored 
+	- `git clone https://github.com/MicrosoftDocs/minimal-api-work-with-databases`
+- into the folder, run:
+	- `dotnet ef database update`
+	- (if ef [entity framework]) is not installed, then:
+	- `dotnet tool install -g dotnet-ef`
+* Lastly, to run:
+	- `dotnet run` to run
+
+
+
 ## from "Create a web API with ASP.NET Core controllers"
+
 - Install the certificate: `dotnet dev-certs https --trust` from [https://learn.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-7.0&tabs=visual-studio%2Clinux-ubuntu#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos](https://learn.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-7.0&tabs=visual-studio%2Clinux-ubuntu#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos)
 - Install repl `dotnet tool install -g Microsoft.dotnet-httprepl`
 	- httprepl https://localhost:{PORT}
@@ -286,7 +350,7 @@
 	- documents folder: `23_db_w_minimal_API_Entity_Framework_ASP_NETCore`
 
 24. Create a full stack application by using React and minimal API for ASP.NET Core
-	- code folder: ``
+	- code folder: `minimalAPI_n_React_unit24`
 	- documents folder: `24_full_stack_app_w_React_n_minimal_API_ASPNETCore`
 
 25. Build your first microservice with .NET
