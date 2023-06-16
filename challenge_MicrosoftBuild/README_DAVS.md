@@ -1,5 +1,7 @@
 # Notes
 
+- The information is for learning purposes only, no other reason or process will be performed. I did not create the tools, code, or any other piece of tech in this specific repo.
+
 ## General Public Note
 
 - **The code in this forlder is for educational purposes only, I a not the author/creator, I use these multiple folders to track the learning process. The owners are their respective creators. **
@@ -362,7 +364,7 @@ EXPOSE 443
 COPY --from=build /app .
 ENTRYPOINT ["dotnet", "backend.dll"]
 ```
-	- Explanation of the isntructions:
+	- Explanation of the instructions:
 		- Pull the mcr.microsoft.com/dotnet/sdk:6.0 image and name the image build
 		- Set the working directory within the image to /sr
 		- Copy the file named backend.csproj found locally to the /src directory that you created
@@ -384,8 +386,136 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 	- set the `--rm` flag, Docker also removes the anonymous volumes associated with the container when the container is removed. This is similar to running docker rm -v my-container. Only volumes that are specified without a name are removed [https://docs.docker.com/engine/reference/run/#clean-up---rm]
 	- `-p` Publish all exposed ports to the host interfaces
 	
+#### docker compose
 
+- Example of a `docker-composer.yml` file:
+	+ code:
+	```
+	version: '3.4'
 
+	services: 
+
+	  frontend:
+	    image: pizzafrontend
+	    build:
+	      context: frontend
+	      dockerfile: Dockerfile
+	    environment: 
+	      - backendUrl=http://backend
+	    ports:
+	      - "5902:80"
+	    depends_on: 
+	      - backend
+	  backend:
+	    image: pizzabackend
+	    build: 
+	      context: backend
+	      dockerfile: Dockerfile
+	    ports: 
+	      - "5000:80"
+	```
+	- 2 parts in this code:
+		- First, it creates the frontend website, naming it pizzafrontend. The code tells Docker to build it, pointing to the Dockerfile found in the frontend folder.
+			+ then the code sets an environment variable for the website:
+				* `backendUrl=http://backend`
+			+ then this code opens a port and declares it depends on the backend service.
+		- Second, the backend service gets created (named pizzabackend)
+			+ it's built from the same Dockerfile created above
+			+ the last command specifies which port to open
+	- Commands:
+		+ `docker compose build`
+		+ `docker compose up`
+
+## Kubernetes
+
+- is a portable, extensible open-source platform for managing and orchestrating containerized workloads.
+- *Orchestration:* automatically deploys and manages containerized apps and *management:* process of organizing, adding, removing, or updating a significant number of containers
+- Example 1 of kubernetes yml file
+	+ code:
+	```
+	version: '3.4'
+
+	services: 
+
+	  frontend:
+	    image: pizzafrontend
+	    build:
+	      context: frontend
+	      dockerfile: Dockerfile
+	    environment: 
+	      - backendUrl=http://backend
+	    ports:
+	      - "5902:80"
+	    depends_on: 
+	      - backend
+	  backend:
+	    image: pizzabackend
+	    build: 
+	      context: backend
+	      dockerfile: Dockerfile
+	    ports: 
+	      - "5900:80"
+	    
+	```
+* Example 2:
+	- code
+	```
+	---
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata:
+	  name: pizzabackend
+	spec:
+	  replicas: 1
+	  template:
+	    metadata:
+	      labels:
+	        app: pizzabackend
+	    spec:
+	      containers:
+	      - name: pizzabackend
+	        image: [YOUR DOCKER USER NAME]/pizzabackend:latest
+	        ports:
+	        - containerPort: 80
+	        env:
+	        - name: ASPNETCORE_URLS
+	          value: http://*:80
+	  selector:
+	    matchLabels:
+	      app: pizzabackend
+	---
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  name: pizzabackend
+	spec:
+	  type: ClusterIP
+	  ports:
+	  - port: 80
+	  selector:
+	    app: pizzabackend
+	```
+	- Explanation:
+		- The **first** portion defines a deployment spec for the container that will be deployed into Kubernetes
+		- It specifies there will be one replica, where to find the container image, which ports to open on the container, and sets some environment variables
+		- This first portion also defines labels and names that the container and spec can be referenced by
+
+		- The **second** portion then defines that the container will run as a Kubernetes ClusterIP
+		- this type of service doesn't expose an external IP address
+		- It's only accessible from other services running from within the same Kubernetes cluster
+	
+
+### kubernetes commands
+
+- Build containers: `docker-compose build`
+- Run the app and attahc containers `docker-compose up`
+- Sign in to docker hub `docker login`
+- rename iamges:
+	- docker tag pizzafrontend [DOCKER USER NAME]/pizzafrontend
+	- docker tag pizzabackend [DOCKER USER NAME]/pizzabackend
+- push:
+	- docker push [DOCKER USER NAME]/pizzafrontend
+	- docker push [DOCKER USER NAME]/pizzabackend
 
 ## Folders Organization
 
@@ -468,8 +598,8 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 	- documents folder: `25_Build_your_first_Microservice_w_dotNET`
 
 26. Deploy a .NET microservice to Kubernetes
-	- code folder: ``
-	- documents folder: ``
+	- code folder: `microServices_kubernetes`
+	- documents folder: `26_Deploy_NET_microservice_Kubernetes`
 
 27. Create and deploy a cloud-native ASP.NET Core microservice
 	- code folder: ``
