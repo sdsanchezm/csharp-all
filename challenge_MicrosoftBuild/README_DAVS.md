@@ -47,14 +47,30 @@
 	- PostgreSQL
 	- Oracle
 	- Microsoft SQL Server
-- Query data:
+
+- Query data (like GET):
 	- `var pizzas = await db.Pizzas.ToListAsync();`
-- Insert Data
+	- Another example (code in the repo)
+	```
+	app.MapGet("/pizza/{id}", async (PizzaDb db, int id) => await db.Pizzas.FindAsync(id));
+	```
+
+- Insert Data (like POST):
 	- 
 	```
 	await db.pizzas.AddAsync(
     new Pizza { ID = 1, Name = "Pepperoni", Description = "The classic pepperoni pizza" });
 	```
+	- Another Example of create an item (code in a folder):
+	```
+	app.MapPost("/pizza", async (PizzaDb db, Pizza pizza) =>
+	{
+	    await db.Pizzas.AddAsync(pizza);
+	    await db.SaveChangesAsync();
+	    return Results.Created($"/pizza/{pizza.Id}", pizza);
+	});
+	```
+
 - Delete data:
 	- 
 	```
@@ -65,7 +81,22 @@
 	}
 	db.pizzas.Remove(pizza);
 	```
-- Delete Data:
+	- Another Example (code in the repo)
+	```
+	app.MapDelete("/pizza/{id}", async (PizzaDb db, int id) =>
+	{
+	   var pizza = await db.Pizzas.FindAsync(id);
+	   if (pizza is null)
+	   {
+	      return Results.NotFound();
+	   }
+	   db.Pizzas.Remove(pizza);
+	   await db.SaveChangesAsync();
+	   return Results.Ok();
+	});
+	```
+
+- Update Data:
 	- 
 	```
 	int id = 1;
@@ -79,6 +110,21 @@
 	pizza.IsComplete = updatepizza.IsComplete;
 	await db.SaveChangesAsync();
 	```
+	- Another Example (code in the repo)
+	```
+	app.MapPut("/pizza/{id}", async (PizzaDb db, Pizza updatepizza, int id) =>
+	{
+	      var pizza = await db.Pizzas.FindAsync(id);
+	      if (pizza is null) return Results.NotFound();
+	      pizza.Name = updatepizza.Name;
+	      pizza.Description = updatepizza.Description;
+	      await db.SaveChangesAsync();
+	      return Results.NoContent();
+	});
+	```
+
+
+
 - DbContext represents a connection or session that's used to query and save instances of entities in a database.
 - To use it, add `using Microsoft.EntityFrameworkCore;` at the top of files
 - First: create a migration:
@@ -202,6 +248,7 @@ app.UseCors(MyAllowSpecificOrigins);
 
 
 ## working with Blazor
+
 - composed of reusable web UI components built using C#, HTML, and CSS
 - uses:
 	- Server side code that handles UI interactions over a WebSocket connection
@@ -274,6 +321,69 @@ app.UseCors(MyAllowSpecificOrigins);
 	- To install EF Design:
 		- `dotnet add package Microsoft.EntityFrameworkCore.Design --version 6.0`
 
+
+## Microservices
+
+- A microservices architecture is an approach in which a large application is split up into a set of smaller services.
+- Modern cloud applications need to be fast, agile, massively scalable, and reliable. putting an application into a container without following a design pattern is like getting into a vehicle and hoping to find way to a new city without a map (or GPS-enabled phone).
+- Microservices enable an approach to software development and deployment that is perfectly suited to the agility, scale, and reliability requirements of modern cloud applications.
+- Get docker from [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
+- Each service runs in its own process and communicates with other processes using protocols such as:
+	+ HTTP/HTTPS
+	+ WebSockets
+	+ AMQP.
+- Microservices are designed based on business needs, rather than purely tech.
+
+### Docker 
+
+- Docker is a project for automating deployment of applications as portable, self-sufficient containers that can run in the cloud or on-premises
+- In short, containers offer the benefits of isolation, portability, agility, scalability, and control across the whole application-lifecycle workflow
+- An image is a static representation of the app or service and its configuration and dependencies
+- Docker file is a set of instructions that builds up a Docker image with the exact software you need in it to run an application, including the application itself
+- Containerization is an approach to software development in which an application or service, its dependencies, and its configuration (abstracted as deployment manifest files) are packaged together as a container image
+- The benefits of microservices are that each one encapsulates simpler customer-requirement functionality, which can be scaled out or in, tested, deployed, and managed independently. 
+- Links:
+	+ [https://github.com/docker/docker](https://github.com/docker/docker)
+	+ [https://www.docker.com/](https://www.docker.com/)
+- Kestrel is a cross-platform web server for ASP.NET Core that runs on Windows, Linux, and macOS
+- Microsoft publishes an image called mcr.microsoft.com/dotnet/core/aspnet that already contains the ASP.NET Core runtime
+- Dockerfile example:
+```
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY backend.csproj .
+RUN dotnet restore
+COPY . .
+RUN dotnet publish -c release -o /app
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+COPY --from=build /app .
+ENTRYPOINT ["dotnet", "backend.dll"]
+```
+	- Explanation of the isntructions:
+		- Pull the mcr.microsoft.com/dotnet/sdk:6.0 image and name the image build
+		- Set the working directory within the image to /sr
+		- Copy the file named backend.csproj found locally to the /src directory that you created
+		+ Calls dotnet restore on the project
+		+ Copy everything in the local working directory to the image
+		+ Calls dotnet publish on the project
+
+- Docker tutorial from Microsoft:
+	+ [https://dotnet.microsoft.com/en-us/learn/aspnet/microservice-tutorial/install-docker](https://dotnet.microsoft.com/en-us/learn/aspnet/microservice-tutorial/install-docker)
+
+#### docker commands:
+
+- `docker build -t pizzabackend .` (including the dot for the directory)
+- `docker run -it --rm -p 5200:80 --name pizzabackendcontainer pizzabackend`
+- `docker images`
+- Notes:
+	- `-it` is short for `--interactive` + `--tty` when docker runs with this flag, it takes you straight inside the container
+	- containers started in detached mode exit when the `root` process used to run the container exits, unless you also specify the `--rm` option.
+	- set the `--rm` flag, Docker also removes the anonymous volumes associated with the container when the container is removed. This is similar to running docker rm -v my-container. Only volumes that are specified without a name are removed [https://docs.docker.com/engine/reference/run/#clean-up---rm]
+	- `-p` Publish all exposed ports to the host interfaces
+	
 
 
 
@@ -354,8 +464,8 @@ app.UseCors(MyAllowSpecificOrigins);
 	- documents folder: `24_full_stack_app_w_React_n_minimal_API_ASPNETCore`
 
 25. Build your first microservice with .NET
-	- code folder: ``
-	- documents folder: ``
+	- code folder: `microServices1`
+	- documents folder: `25_Build_your_first_Microservice_w_dotNET`
 
 26. Deploy a .NET microservice to Kubernetes
 	- code folder: ``
