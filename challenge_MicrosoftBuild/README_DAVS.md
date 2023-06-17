@@ -139,6 +139,21 @@
 	- `dotnet ef database update`
 
 
+## publish web app in azure from visual studio
+
+- In vs create a project from the `ASP.NET Core Web App` workload
+- Run with `F5`
+- In Azure:
+	+ Create an account
+	+ Create the Resour ce Group
+	+ Create the Web App
+	+ Download the publish profile
+	+ in VS log into the MS account
+	+ import the publish profile (is a file from azure, named `<AppName>.PublishSettings`)
+	+ then, the publish option will show up in VS
+	
+
+
 ## Planning the app and some API design considerations
 
 - Ask questions:
@@ -425,6 +440,7 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 	- Commands:
 		+ `docker compose build`
 		+ `docker compose up`
+* kubernetes support declarative configuration management meaning, the services you define in the configuration files will be retained at all costs
 
 ## Kubernetes
 
@@ -503,6 +519,59 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 		- The **second** portion then defines that the container will run as a Kubernetes ClusterIP
 		- this type of service doesn't expose an external IP address
 		- It's only accessible from other services running from within the same Kubernetes cluster
+	* run:
+		- `kubectl apply -f backend-deploy.yml`
+	* view progress
+		- `kubectl get pods`
+
++ Example 3 of a yml file:
+	* code
+	```
+	---
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata:
+	  name: pizzafrontend
+	spec:
+	  replicas: 1
+	  template:
+	    metadata:
+	      labels:
+	        app: pizzafrontend
+	    spec:
+	      containers:
+	      - name: pizzafrontend
+	        image: [YOUR DOCKER USER NAME]/pizzafrontend:latest
+	        ports:
+	        - containerPort: 80
+	        env:
+	        - name: ASPNETCORE_URLS
+	          value: http://*:80
+	        - name: backendUrl
+	          value: http://pizzabackend
+	  selector:
+	    matchLabels:
+	      app: pizzafrontend
+	---
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  name: pizzafrontend
+	spec:
+	  type: LoadBalancer
+	  ports:
+	  - port: 80
+	  selector:
+	    app: pizzafrontend
+	```
+	- Then `kubectl apply -f frontend-deploy.yml`
+	
+### kubernetes scale
+
+- scale `kubectl scale --replicas=5 deployment/pizzabackend`
+- Verify instances `kubectl get pods`
+- scale instances back down `kubectl scale --replicas=1 deployment/pizzabackend`
+- 
 	
 
 ### kubernetes commands
@@ -517,26 +586,43 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 	- docker push [DOCKER USER NAME]/pizzafrontend
 	- docker push [DOCKER USER NAME]/pizzabackend
 
-## Folders Organization
+- kubernetes resiliency proving, even if deleted, it will maintain 
+	+ `kubectl get pods`
+	+ `kubectl delete pod pizzafrontend-5b6cc765c4-hjpx4`
+	+ `kubectl get pods`
+
+## ms learning path
 
 - MS learning path: *"Use pages, routing, and layouts to improve Blazor navigation"*
 	- [https://learn.microsoft.com/en-us/training/modules/use-pages-routing-layouts-control-blazor-navigation/?WT.mc_id=cloudskillschallenge_150aae80-e46b-4a07-894a-5247fcdfcbad](https://learn.microsoft.com/en-us/training/modules/use-pages-routing-layouts-control-blazor-navigation/?WT.mc_id=cloudskillschallenge_150aae80-e46b-4a07-894a-5247fcdfcbad)
-- pass
-
 
 
 ## Topics from the challenge and folders
 
 1. Write your first C# code
+
 2. Get started with web development using Visual Studio Code
+
 3. Learn the basics of web accessibility
+
 4. Create a web UI with ASP.NET Core
+
 5. Create a web API with ASP.NET Core controllers
+
+
 6. Publish a web app to Azure with Visual Studio
+	- code folder: `publish_web_azure_w_visual_studio`
+	- documents folder: `6_publish_web_azure_w_visual_studio`
+
 7. Introduction to .NET
+
 8. Create a new .NET project and work with dependencies
+
 9. Interactively debug .NET apps with the Visual Studio Code debugger
+
+
 10. Work with files and directories in a .NET app
+
 11. Introduction to Web Development with Blazor
 	- code folder: ``
 	- documents folder: `11_Introduction_to_Web Development with Blazor`
@@ -571,7 +657,7 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 
 19. Externalize the configuration of an ASP.NET app by using an Azure key vault
 	- code folder: ``
-	- documents folder: ``
+	- documents folder: `19_Externalizing_Config_w_ASPNET_Azure_key_vault`
 
 20. Implement logging in a .NET Framework ASP.NET web application
 	- code folder: ``
