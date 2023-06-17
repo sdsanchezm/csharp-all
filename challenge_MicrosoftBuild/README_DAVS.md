@@ -571,7 +571,6 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 - scale `kubectl scale --replicas=5 deployment/pizzabackend`
 - Verify instances `kubectl get pods`
 - scale instances back down `kubectl scale --replicas=1 deployment/pizzabackend`
-- 
 	
 
 ### kubernetes commands
@@ -590,6 +589,58 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 	+ `kubectl get pods`
 	+ `kubectl delete pod pizzafrontend-5b6cc765c4-hjpx4`
 	+ `kubectl get pods`
+	
+
+## Azure Key vault and details
+
+- Defining resources in azure powershell
+	+ `$useralias = "<your-initials-with-suffix>"`
+	+ `$serveradminpassword = "<your-password>"`
+	+ `$resourcegroupname = "learn-f58d50f2-f886-4616-b524-f183188ab671"`
+- Defining additional resources in azure:
+	```
+	$location = "eastus"
+	$webappplanname = (-join($useralias,"-webappplan"))
+	$webappname = (-join($useralias,"-webapp"))
+	$serveradminname = "ServerAdmin"
+	$servername = (-join($useralias, "-workshop-server"))
+	$dbname = "eShop"
+	```
+- To create a new Azure App Service plan for hosting the web app, run the following PowerShell command:
+	```
+	New-AzAppServicePlan `
+	    -Name $webappplanname `
+	    -ResourceGroup $resourcegroupname `
+	    -Location $location
+	```
+- To create a web app by using the App Service plan, run the following PowerShell command:
+	```
+	New-AzWebApp `
+	    -Name $webappname `
+	    -AppServicePlan $webappplanname `
+	    -ResourceGroup $resourcegroupname `
+	    -Location $location
+	```
+- To
+	```
+
+	```
+- To
+	```
+
+	```
+- To
+	```
+
+	```
+- To
+	```
+
+	```
+- To
+	```
+
+	```
 
 ## ms learning path
 
