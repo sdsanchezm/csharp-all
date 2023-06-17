@@ -591,12 +591,14 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 	+ `kubectl get pods`
 	
 
-## Azure Key vault and details
+## Azure Key vault and details of creating Azure objects from Cloud PS
 
 - Defining resources in azure powershell
 	+ `$useralias = "<your-initials-with-suffix>"`
+		* - example: `$useralias = "sstemp1"`
 	+ `$serveradminpassword = "<your-password>"`
-	+ `$resourcegroupname = "learn-f58d50f2-f886-4616-b524-f183188ab671"`
+		* * - example: `$serveradminpassword = "DeineMutter100@"`
+	+ `$resourcegroupname = "learn-f7150f2-f986-4416-b521-f183188ab672"`
 - Defining additional resources in azure:
 	```
 	$location = "eastus"
@@ -621,26 +623,49 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 	    -ResourceGroup $resourcegroupname `
 	    -Location $location
 	```
-- To
+- To assign a managed identity to the web app, run the following PowerShell command. You'll require this identity later.
 	```
+	Set-AzWebApp `
+	    -AssignIdentity $true `
+	    -Name $webappname `
+	    -ResourceGroupName $resourcegroupname
+	```
+- To create a new Azure SQL Database instance, run the following PowerShell command:
+	```
+	New-AzSqlServer `
+	    -ServerName $servername `
+	    -ResourceGroupName $resourcegroupname `
+	    -Location $location `
+	    -SqlAdministratorCredentials $(New-Object `
+	        -TypeName System.Management.Automation.PSCredential `
+	        -ArgumentList $serveradminname, `
+	        $(ConvertTo-SecureString `
+	        -String $serveradminpassword `
+	        -AsPlainText -Force))
+	```
+- To open the SQL Database instance firewall to allow access to services hosted in Azure, run the following PowerShell command:
+	```
+	New-AzSqlServerFirewallRule `
+	    -ResourceGroupName $resourcegroupname `
+	    -ServerName $servername `
+	    -FirewallRuleName "AllowedIPs" `
+	    -StartIpAddress "0.0.0.0" `
+	    -EndIpAddress "0.0.0.0"
+	```
+- To create a database in SQL Database, run the following PowerShell command. The database will be populated later, when you migrate the web app.
+	```
+	New-AzSqlDatabase  `
+	    -ResourceGroupName $resourcegroupname `
+	    -ServerName $servername `
+	    -DatabaseName $dbName `
+	    -RequestedServiceObjectiveName "S0"
+	```
+### ConfigurationManager and ConfigurationBuilder class
 
-	```
-- To
-	```
+- **ConfigurationManager** approach that's used by many traditional .NET Framework and ASP.NET web apps allows an administrator to store configuration information as a series of keys and values in a config file.
+- **ConfigurationBuilder** object is designed to enable you to retrieve configuration information from a variety of sources.
+- 
 
-	```
-- To
-	```
-
-	```
-- To
-	```
-
-	```
-- To
-	```
-
-	```
 
 ## ms learning path
 
