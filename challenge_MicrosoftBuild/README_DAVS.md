@@ -351,7 +351,7 @@ app.UseCors(MyAllowSpecificOrigins);
 	+ AMQP.
 - Microservices are designed based on business needs, rather than purely tech.
 
-### Docker 
+### Docker
 
 - Docker is a project for automating deployment of applications as portable, self-sufficient containers that can run in the cloud or on-premises
 - In short, containers offer the benefits of isolation, portability, agility, scalability, and control across the whole application-lifecycle workflow
@@ -743,9 +743,141 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 - [#pending]
 
 
-## session scalability using Azure Cache for Redis
+## Improve session scalability using Azure Cache for Redis
 
 - [#pending]
+- create variables
+	```
+	$useralias = "ssalias1"
+	$serveradminpassword = "ElEscarabaju100@"
+	$resourcegroupname = "sstemp3"
+	```
+- then
+	```
+	$location = "eastus"
+	$webappplanname = (-join($useralias,"-webappplan"))
+	$webappname = (-join($useralias,"-webapp"))
+	$serveradminname = "ServerAdmin"
+	$servername = (-join($useralias, "-workshop-server"))
+	$dbname = "eShop"
+	```
+- To create a new service plan (**OPTIONAL**)
+```
+	New-AzAppServicePlan `
+	    -Name $webappplanname `
+	    -ResourceGroup $resourcegroupname `
+	    -Location $location
+```
+
+- Run the following PowerShell command to create a web app by using the App Service plan:
+	```
+	New-AzWebApp `
+    	-Name $webappname `
+    	-AppServicePlan $webappplanname `
+    	-ResourceGroup $resourcegroupname `
+    	-Location $location
+	```
+
+- Run the following PowerShell command to assign a managed identity to the web app. You'll need this identity later.
+	```
+	Set-AzWebApp `
+    	-AssignIdentity $true `
+    	-Name $webappname `
+    	-ResourceGroupName $resourcegroupname
+   	```
+
+- Run the following PowerShell command to create a new Azure SQL Database server:
+	```
+	`New-AzSqlServer `
+    	-ServerName $servername `
+    	-ResourceGroupName $resourcegroupname `
+    	-Location $location `
+    	-SqlAdministratorCredentials $(New-Object `
+        	-TypeName System.Management.Automation.PSCredential `
+        	-ArgumentList $serveradminname, `
+        	$(ConvertTo-SecureString `
+        	-String $serveradminpassword `
+        	-AsPlainText -Force))`
+	```
+
+- the following PowerShell command to open the SQL Database server firewall to allow access to services hosted in Azure:
+```
+New-AzSqlServerFirewallRule `
+    -ResourceGroupName $resourcegroupname `
+    -ServerName $servername `
+    -FirewallRuleName "AllowedIPs" `
+    -StartIpAddress "0.0.0.0" `
+    -EndIpAddress "0.0.0.0"
+```
+
+
+- Run the following PowerShell command to create a database on the SQL Database server. The database will be populated later, when you migrate the web app.
+
+```
+New-AzSqlDatabase  `
+    -ResourceGroupName $resourcegroupname `
+    -ServerName $servername `
+    -DatabaseName $dbName `
+    -RequestedServiceObjectiveName "S0"
+```
+- new azure cache for redis instance name
+```
+$rediscachename = (-join($useralias, "-workshop-cache"))
+```
+- Create the azure cache for redis instance
+```
+az redis create `
+    --location $location `
+    --name $rediscachename `
+    --resource-group $resourcegroupname `
+    --sku Basic `
+    --vm-size c0
+```
+- check provisioning state 
+```
+(Get-AzRedisCache `
+    -ResourceGroupName $resourcegroupname `
+    -Name $rediscachename).ProvisioningState
+```
+- retrieve primary access key for cache and record (use it later)
+```
+$rediskey = (Get-AzRedisCacheKey `
+    -Name $rediscachename `
+    -ResourceGroup $resourcegroupname).PrimaryKey
+```
+- to use the feature in the code, the package `Microsoft.Web.RedisSessionStateProvider` should be installed using nuGet.
+- the web.config file look like this
+```
+<sessionState mode="Custom" customProvider="MySessionStateStore">
+  <providers>
+    <!-- For more details check https://github.com/Azure/aspnet-redis-providers/wiki -->
+    <!-- Either use 'connectionString' OR 'settingsClassName' and 'settingsMethodName' OR use 'host','port','accessKey','ssl','connectionTimeoutInMilliseconds' and 'operationTimeoutInMilliseconds'. -->
+    <!-- 'throwOnError','retryTimeoutInMilliseconds','databaseId' and 'applicationName' can be used with both options. -->
+    <add name="MySessionStateStore" type="Microsoft.Web.Redis.RedisSessionStateProvider" host="" accessKey="" ssl="true" />
+  </providers>
+</sessionState>
+```
+- amend the entry for MySessionStateStore. replace <youralias> with the value of the $useralias in PS. Replace <primarykey> with the value of the $rediskey (the var got before)
+
+```
+<sessionState mode="Custom" customProvider="MySessionStateStore">
+  <providers>
+    <add name="MySessionStateStore" 
+         type="Microsoft.Web.Redis.RedisSessionStateProvider" 
+         host="<youralias>-workshop-cache.redis.cache.windows.net" 
+         accessKey="<primarykey>"
+         ssl="true" />
+  </providers>
+</sessionState>
+```
+- comment `<sessionState mode="InProc" />` in the same file `Web.Config`
+- In a SQL Server database, this line: `-- USE [Microsoft.eShopOnContainers.Services.CatalogDb]` is only for a local environment, so it must be commented.
+- Sometimes is required to configura a firewall rule
+	```
+	New-AzSqlServerFirewallRule -ResourceGroupName $resourcegroupname -ServerName $servername -FirewallRuleName "AllowDesktop" -StartIpAddress YourIPAddress -EndIpAddress YourIPAddress
+	```
+- few more steps ins the 21_* document
+
 
 ## Create and deploy a cloud-native ASP.NET Core microservice
 
@@ -771,13 +903,69 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 	+ `winget install -e --id Microsoft.AzureCLI`
 	+ Verify: `az --version` 
 	+ documentation [https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=winget#run-the-azure-cli](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=winget#run-the-azure-cli)
+	+ 
 
-### Commands 
+### Commands
 
 - login from console:
 	```
 	az login --use-device-code
 	```
+- enabling addons for a AKS cluster
+	```
+	az aks enable-addons \
+	    --addons monitoring \
+	    --name eshop-learn-aks \
+	    --resource-group eshop-learn-rg \
+	    --query provisioningState
+	```
+- temporarily set the workiong directory:
+	```
+	pushd ../../src/Services/Catalog/Catalog.API/
+	```
+- install prometheus package
+	```
+	dotnet add package prometheus-net.AspNetCore --version 6.0.0
+	```
+- deployment.yaml file:
+	```
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata:
+	  name: catalog
+	  labels:
+	    app: eshop
+	    service: catalog
+	spec:
+	  replicas: 1
+	  selector:
+	    matchLabels:
+	      service: catalog
+	  template:
+	    metadata:
+	      annotations:
+	        prometheus.io/scrape: "true"
+	        prometheus.io/path: /metrics
+	        prometheus.io/port: "80"
+	      labels:
+	        app: eshop
+	        service: catalog
+	    spec:
+	      # YAML omitted for brevity
+	```
+- Delete the resource group to avoid charges in azure
+	```
+	az group delete --name eshop-learn-rg --yes
+	```
+- 
+
+## Implement_feature flags cloudNative ASP.NET Core microservices app
+
+- in vscode, Ctrl+Shift+p and then "Dev Containers: Clone Repository in Container Volume", it will automatically create a docker container
+- select a repo to be cloned by vscode
+- Login into azure `az login --use-device-code`
+- Verify `az account show -o table`
+- 
 
 
 
@@ -855,7 +1043,7 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 
 21. Improve session scalability in a .NET Framework ASP.NET web application by using Azure Cache for Redis
 	- code folder: ``
-	- documents folder: ``
+	- documents folder: `21_sessionScalability_ASPNET_webapp_usingAzueCacheRedis`
 
 22. Build a web API with minimal API, ASP.NET Core, and .NET
 	- code folder: `minimalAPI_unit22`
@@ -891,7 +1079,7 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 
 30. Implement feature flags in a cloud-native ASP.NET Core microservices app
 	- code folder: ``
-	- documents folder: ``
+	- documents folder: `30_Implement_flags_cloudNative_ASPNET_Core_microservices_app`
 
 31. Use managed data stores in a cloud-native ASP.NET Core microservices app
 	- code folder: ``
@@ -905,3 +1093,9 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 	- code folder: ``
 	- documents folder: ``
 	
+
+# References
+
+## Azure
+
+	- [https://learn.microsoft.com/en-us/cli/azure/account?view=azure-cli-latest#az-account-set](https://learn.microsoft.com/en-us/cli/azure/account?view=azure-cli-latest#az-account-set)
