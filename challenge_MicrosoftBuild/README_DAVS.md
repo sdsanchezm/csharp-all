@@ -664,7 +664,121 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 
 - **ConfigurationManager** approach that's used by many traditional .NET Framework and ASP.NET web apps allows an administrator to store configuration information as a series of keys and values in a config file.
 - **ConfigurationBuilder** object is designed to enable you to retrieve configuration information from a variety of sources.
-- 
+- some ConfigurationBuilder configuration are:
+	+ **Microsoft.Configuration.ConfigurationBuilders.Environment**: Adds settings from the environment variables of the current process
+	- **Microsoft.Configuration.ConfigurationBuilders.UserSecrets**: Adds user secrets contained in an XML file external to the code base
+	- **Microsoft.Configuration.ConfigurationBuilders.Azure**: Pulls items from key vault
+	- **Microsoft.Configuration.ConfigurationBuilders.KeyPerFile**: File based, where the name of the file is the key, and the contents are the value
+	- **Microsoft.Configuration.ConfigurationBuilders.Json**: Pulls key/value pairs from JSON files
+*  can also create your own custom ConfigurationBuilder class
+*  the use depends of the use
+
+### Configuration of ConfigurationBuilder
+
+- `secrets.xml` file, located in `(%APPDATA%\Microsoft\UserSecrets<userSecretsId>\secrets.xml in Windows)`
+	```
+	<configuration>
+	  <configSections>
+	    <section name="configBuilders" type="System.Configuration.ConfigurationBuildersSection, System.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" restartOnExternalChanges="false" requirePermission="false" />
+	    ...
+	  </configSections>
+	  <configBuilders>
+	    <builders>
+	      <add name="Environment" type="Microsoft.Configuration.ConfigurationBuilders.EnvironmentConfigBuilder, Microsoft.Configuration.ConfigurationBuilders.Environment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+	      <add name="Secrets" userSecretsId="c96e0578-6490-4a2d-b6c5-cb2b0baaeae8" type="Microsoft.Configuration.ConfigurationBuilders.UserSecretsConfigBuilder, Microsoft.Configuration.ConfigurationBuilders.UserSecrets, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+	    </builders>
+	  </configBuilders>
+	  <appSettings configBuilders="Environment,Secrets">
+	    <add key="MySecretData" value="" />
+	    <add key="MyEnvironmentData" value="" />
+	  </appSettings>
+	  ...
+	<configuration>
+	```
+- the order can be adjusted
+- the MySecretData and MyEnvironmentData can be retried based on the `configBuilders="Environment,Secrets`  config.
+
+### Key Vault commands
+
+- Key Vault definition to be created:
+	```
+	$vaultname = (-join("shopvault", $useralias))
+	```
+- Create the Key Vault in azure:
+	```
+	New-AzKeyVault `
+	    -Name $vaultname `
+	    -ResourceGroupName $resourcegroupname `
+	    -location $location
+	```
+- Retrieve principal service id of the web app:
+	```
+	$appId=(Get-AzWebApp `
+	    -ResourceGroupName $resourcegroupname `
+	    -Name $webappname).Identity.PrincipalId
+	```
+- Set the access policy of the key vault to allow the web app, which you identify by using the service principal, to access the key vault:
+	```
+	Set-AzKeyVaultAccessPolicy `
+	    -VaultName $vaultname `
+	    -ResourceGroupName $resourcegroupname `
+	    -ObjectId $appId `
+	    -PermissionsToSecrets Get
+	```
+	- here, the "-BypassObjectIdValidation" could be added
+- Generate the connection string for the SQL Server database by using the PowerShell variables created earlier:
+	```
+	$connectionstringplaintext = `
+	    (-join("Server=tcp:", $servername, ".database.windows.net,1433;Database=", `
+	    $dbname, ";User ID=", $serveradminname, ";Password=", $serveradminpassword, `
+	    ";Encrypt=true;Connection Timeout=30;"))
+	```
+- convert connection string into secure String
+	```
+	$connectionstring = ConvertTo-SecureString $connectionstringplaintext `
+	    -AsPlainText `
+	    -Force
+	```
+
+- [#pending]
+
+
+## session scalability using Azure Cache for Redis
+
+- [#pending]
+
+## Create and deploy a cloud-native ASP.NET Core microservice
+
+- [#pending]
+
+### Commands
+
+- deletes the resource group that contains the AKS and Container Registry resources
+	+ `az group delete --name eshop-learn-rg --yes`
+
+
+
+## Implement resiliency in a cloud-native ASP.NET Core microservice
+
+- [#pending]
+- To remove all the resources created
+	+ `az group delete --name eshop-learn-rg --yes`
+
+## Instrument a cloud-native ASP.NET Core microservice
+
+- [#pending]
+- install AzureCli:
+	+ `winget install -e --id Microsoft.AzureCLI`
+	+ Verify: `az --version` 
+	+ documentation [https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=winget#run-the-azure-cli](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=winget#run-the-azure-cli)
+
+### Commands 
+
+- login from console:
+	```
+	az login --use-device-code
+	```
+
 
 
 ## ms learning path
@@ -765,15 +879,15 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 
 27. Create and deploy a cloud-native ASP.NET Core microservice
 	- code folder: ``
-	- documents folder: ``
+	- documents folder: `27_Create_and_deploy_cloud-native_ASPNET_Core_microservice`
 
 28. Implement resiliency in a cloud-native ASP.NET Core microservice
 	- code folder: ``
-	- documents folder: ``
+	- documents folder: `28_Implement_resiliency__cloudNative_ASPNET_Core_microservice`
 
 29. Instrument a cloud-native ASP.NET Core microservice
 	- code folder: ``
-	- documents folder: ``
+	- documents folder: `29_Instrument_cloudNative_ASPNETCore_microservice`
 
 30. Implement feature flags in a cloud-native ASP.NET Core microservices app
 	- code folder: ``
