@@ -41,18 +41,44 @@ app.MapGet("/api/tareas", async ([FromServices] TareasContext dbContext) =>
 		return Results.Ok(tareas);
 });
 
+// Returns only 1 item 
+app.MapGet("/api/tareas/{id}", async ([FromServices] TareasContext dbContext, [FromRoute] Guid id) => 
+{
+    var tareaFromDB = dbContext.Tareas.Find(id);
+
+    if (tareaFromDB == null)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.Ok(tareaFromDB);
+});
+
+// post implementation to create objects
 app.MapPost("/api/tareas", async ([FromServices] TareasContext dbContext, [FromBody] Tarea tarea ) => 
 {
     tarea.TareaId = Guid.NewGuid();
     tarea.FechaCreacion = DateTime.Now;
 
+    // this is the first option, saving into the dbContext
     await dbContext.AddAsync(tarea);
-    // dbContext.Tarea.AddAsync(tarea);
+    // the below is another option, this is the second option, using the Tareas first and then AddAsync
+    // dbContext.Tareas.AddAsync(tarea);
 
     await dbContext.SaveChangesAsync();
 
     return Results.Ok();
 
+});
+
+// similar implementation to POST
+app.MapPost("/api/tareas2", async ([FromServices] TareasContext dbContext, [FromBody] Tarea Tareas) =>
+{
+	Tareas.TareaId = Guid.NewGuid();
+	Tareas.FechaCreacion = DateTime.Now;
+	await dbContext.Tareas.AddAsync(Tareas);
+	await dbContext.SaveChangesAsync();
+	return Results.Ok(Tareas);
 });
 
 // this is the POST structure: 
@@ -64,6 +90,77 @@ app.MapPost("/api/tareas", async ([FromServices] TareasContext dbContext, [FromB
 //     "descripcion": null,
 //     "prioridadTarea": 2
 // }
+
+// Put Implementation
+app.MapPut("/api/tareas/{id}", async ([FromServices] TareasContext dbContext, [FromBody] Tarea tarea, [FromRoute] Guid id) => 
+{
+    var tareaFromDB = await dbContext.Tareas.FindAsync(id);
+
+    if (tareaFromDB != null)
+    {
+        tareaFromDB.CategoriaId = tarea.CategoriaId;
+        tareaFromDB.Titulo = tarea.Titulo;
+        tareaFromDB.PrioridadTarea = tarea.PrioridadTarea;
+        tareaFromDB.TareaCat = tarea.TareaCat;
+        tareaFromDB.TareaNotes3 = tarea.TareaNotes3;
+        tareaFromDB.Descripcion = tarea.Descripcion;
+    }
+
+    // await dbContext.Tareas.AddAsync(tareaFromDB);
+    await dbContext.SaveChangesAsync();
+
+    return Results.NotFound();
+});
+
+
+// app.MapPut("/api/tareas2/{id}", async ([FromServices] TareasContext dbContext, [FromBody] Tareas tareas, [FromRoute] Guid id) =>
+// {
+// 	var tarea = await dbContext.tareas.FindAsync(id);
+// 	if (tarea == null)
+// 	{
+// 		return Results.NotFound();
+// 	}
+// 	tarea.Titulo = tareas.Titulo;
+// 	tarea.Descripcion = tareas.Descripcion;
+// 	tarea.PrioridadTarea = tareas.PrioridadTarea;
+// 	tarea.Resumen = tareas.Resumen;
+// 	tarea.CategoriaId = tareas.CategoriaId;
+// 	await dbContext.SaveChangesAsync();
+
+// 	return Results.Ok(tarea);
+// });
+
+
+
+app.MapDelete("/api/tareas/{id}", async ([FromServices] TareasContext dbContext, [FromRoute] Guid id) => 
+{
+
+    var tareaFromDb = await dbContext.Tareas.FindAsync(id);
+
+    if ( tareaFromDb == null )
+    {
+        return Results.NotFound();
+    }
+
+    dbContext.Tareas.Remove(tareaFromDb);
+    dbContext.SaveChangesAsync();
+
+    return Results.Ok();
+});
+
+// alternate delete implementation
+// app.MapDelete("/api/tareas/{id}", async ([FromServices] TareasContext dbContext, [FromRoute] Guid id) =>
+// {
+// 	var tarea = await dbContext.Tareas.FindAsync(id);
+// 	if (tarea == null)
+// 	{
+// 		return Results.NotFound();
+// 	}
+// 	dbContext.Tareas.Remove(tarea);
+// 	await dbContext.SaveChangesAsync();
+// 	return Results.Ok(tarea);
+// });
+
 
 
 app.Run();
