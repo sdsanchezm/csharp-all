@@ -66,39 +66,43 @@ Csharp Learning process
     - [Key]
     - [ForeignKey("CategoriaId")]
 
-- Connection String is included in the appsettings.json
+- Connection String is included in the **appsettings.json**
     - 
-        ```
-        "ConnectionStrings": {
-        "connTareasdB": "Data Source=localhost\\SQLEXPRESS;Initial Catalog=TareasDb;user id=admin;password=passHere"
-        }
-        ```
+    ```cs
+    "ConnectionStrings": {
+    "connTareasdB": "Data Source=localhost\\SQLEXPRESS;Initial Catalog=TareasDb;user id=admin;password=passHere"
+    }
+    ```
     - for windows authentication in MS SQL Studio
-        ```
+        ```cs
         "ConnectionStrings": {
-            "cnTareas":"Data Source=.\\SQLEXPRESS;Database=TareasDB;Integrated Security=True"
+            "cnTareas2":"Data Source=.\\SQLEXPRESS;Database=TareasDB;Integrated Security=True"
         }
+        ```
+        ```cs
+        "connTareasdB": "Data Source=KRAUSXQ\\SQLEXPRESS;Initial Catalog=TareasDb1;user id=admin;password=passw0rd",
+        "connTareasdB2": "Data Source=KRAUSXQ\\SQLEXPRESS;Initial Catalog=ToDosDb2;Trusted_Connection=True;TrustServerCertificate=true;"
         ```
 
 - For the postgreSQL, the connection string is:
     - 
-        ```
-        //program.cs
-        builder.Services.AddNpgsql<TaskContext>(builder.Configuration.GetConnectionString("TaskDb"));
+    ```cs
+    //program.cs
+    builder.Services.AddNpgsql<TaskContext>(builder.Configuration.GetConnectionString("TaskDb"));
 
-        // appsettings.json
-        "ConnectionStrings": {
-            "TaskDb" :"Server=postgreServer;Database=StringEF;Port=5430;Username =my_user;Password=root;Host=localhost;"
-        }
+    // appsettings.json
+    "ConnectionStrings": {
+        "TaskDb" :"Server=postgreServer;Database=StringEF;Port=5430;Username =my_user;Password=root;Host=localhost;"
+    }
         ```
 
 - DB Relations (Many to Many)
     - 1:1
-    ```
+    ```cs
     modelBuilder.Entity<Author>().HasOne(a => a.Biography).WithOne(b => b.Author).HasForeignKey<AuthorBiography>(b => b.AuthorRef);
     ```
     - N:N
-    ```
+    ```cs
     modelBuilder.Entity<BookCategory>().HasKey(bc => new { bc.BookId, bc.CategoryId });
     modelBuilder.Entity<BookCategory>().HasOne(bc => bc.Book).WithMany(b => b.BookCategories).HasForeignKey(bc => bc.BookId);
     modelBuilder.Entity<BookCategory>().HasOne(bc => bc.Category).WithMany(c => c.BookCategories).HasForeignKey(bc => bc.CategoryId);
@@ -115,6 +119,11 @@ Csharp Learning process
     - `dotnet add package Microsoft.EntityFrameworkCore.Design --version 6.0.21`
     - `dotnet add package Microsoft.EntityFrameworkCore.Design --version 6.0.3`
         - from [https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/6.0.21]
+
+- Install `entity SQLServer`
+    - `dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 6.0.21`
+        - from [https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/6.0.21]
+
 
 - Create the initial migrations:
     - `dotnet ef migrations add InitialCreate`

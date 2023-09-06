@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // this is for the database in memory
 // builder.Services.AddDbContext<TareasContext>(p => p.UseInMemoryDatabase("TareasDB"));
 
-builder.Services.AddSqlServer<TareasContext>(builder.Configuration.GetConnectionString("connTareasDb"));
+builder.Services.AddSqlServer<TareasContext>(builder.Configuration.GetConnectionString("connTareasdB2"));
 
 var app = builder.Build();
 

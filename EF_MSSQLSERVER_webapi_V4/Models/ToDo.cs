@@ -5,7 +5,6 @@ namespace webapi.Models
 {
     public class ToDo
     {
-        public int Id { get; set; }
         public Guid ToDoId { get; set; }
         public Guid CategoryId { get; set; }
         public string ToDoName { get; set; }
