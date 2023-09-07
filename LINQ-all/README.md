@@ -121,7 +121,34 @@
         - `<Nullable>disable</Nullable>`
 
 
+## Operadores en Linq
 
+1. basicos, filtran y operaciones especificas
+2. agregacion, operaciones 
+3. agrupamiento, agrupar datos
+
+
+### Operador Where
+
+- 
+
+
+
+
+
+
+
+
+
+
+## Misc
+
+- Query Expressions:
+    - `return from b in booksCollection where b.PublishedDate.Year > 2000 select b;`
+    - `return from b in booksCollection where b.PageCount > 250 && b.Title.ToLower().Contains("in action") select b;`
+    
+- Extension Method:
+- `var animalsLocal = animals.Where(item => vowels.Any(vowel => item.Name.ToLower().StartsWith(vowel.ToString() ) ) );`
 
 
 
