@@ -71,13 +71,36 @@ namespace linqAll
                                where a.Color.ToLower() == "green" && vowels.Any(vowel => a.Name.ToLower().StartsWith(vowel))
                                select a;
 
-            
+            foreach (var animalItem in animalsLocal)
+            {
+                Console.WriteLine($"Result: {animalItem.Name} - {animalItem.Color} ");
+            }
+        }
+
+        public void OrderAnimalByName1()
+        {
+            var animalsLocal = animals.OrderBy(p => p.Name);
 
             foreach (var animalItem in animalsLocal)
             {
                 Console.WriteLine($"Result: {animalItem.Name} - {animalItem.Color} ");
             }
         }
+
+        public void OrderAnimalByName2()
+        {
+            var animalsLocal = from animal in animals
+                               orderby animal.Name ascending
+                               select animal;
+
+            foreach (var animalItem in animalsLocal)
+            {
+                Console.WriteLine($"Result: {animalItem.Name} - {animalItem.Color} ");
+            }
+        }
+
+
+
 
     }
 

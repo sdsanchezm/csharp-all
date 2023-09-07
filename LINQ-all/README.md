@@ -128,9 +128,33 @@
 3. agrupamiento, agrupar datos
 
 
-### Operador Where
+### Operators
 
+- Where
+- All and Any
+- Contains
+- Take
+- Skip
+- LongCount and Count
+- Min
+- Max
+- MinBy, returns the complete object
+- MaxBy, returns the complete object
+- Sum
+- Agreegate
+- Average
 - 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -144,13 +168,49 @@
 ## Misc
 
 - Query Expressions:
-    - `return from b in booksCollection where b.PublishedDate.Year > 2000 select b;`
-    - `return from b in booksCollection where b.PageCount > 250 && b.Title.ToLower().Contains("in action") select b;`
-    
+    - `from b in booksCollection where b.PublishedDate.Year > 2000 select b;`
+    - `from b in booksCollection where b.PageCount > 250 && b.Title.ToLower().Contains("in action") select b;`
+    - `from b in booksCollection where b.PageCount > 450 orderby b.PageCount descending select b;` 
+    - 
+        ```cs 
+                var animalsLocal = from animal in animals
+                                    orderby animal.Name ascending
+                                    select animal;
+        ```
+    - 
+    ```cs
+        return booksCollection.Take(3)
+                .Select(p => new Book() { Title = p.Title, PageCount = p.PageCount });
+    ```
+
+
 - Extension Method:
 - `var animalsLocal = animals.Where(item => vowels.Any(vowel => item.Name.ToLower().StartsWith(vowel.ToString() ) ) );`
+- `return booksCollection.Where(item => item.Categories.Contains("Java")).OrderBy(p => p.Title);`
+- 
+    ```cs
+        return (from book in booksCollection
+                where book.Categories.Contains("Java")
+                orderby book.PublishedDate descending
+                select book).Take(3);
+    ```
 
+- List of query keywords
+    - Where,
+    - Select,
+    - SelectMany,
+    - Join,
+    - GroupJoin,
+    - OrderBy,
+    - OrderByDescending,
+    - ThenBy,
+    - ThenByDescending,
+    - GroupBy,
+    - Cast
 
+## Documentation
+
+- [https://stackoverflow.com/questions/17890729/how-can-i-write-take1-in-query-syntax]
 
 
 
