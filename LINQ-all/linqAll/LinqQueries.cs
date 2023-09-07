@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace linqAll
 {
@@ -207,11 +208,41 @@ namespace linqAll
         }
 
 
+        public ILookup<char, Book> BookDictionaryByStartingChar()
+        {
+            return booksCollection.ToLookup(item => item.Title[0], item => item);
+        }
 
-        
+        // === joins
 
+        public IEnumerable<Book> BooksAfter2005WithMoreThan500Pages()
+        {
+            var BooksMoreThan500Pages = booksCollection.Where(item => item.PageCount > 500);
+            var BooksAfter2005 = booksCollection.Where(item => item.PublishedDate.Year > 2005);
 
+            return BooksMoreThan500Pages.Join(BooksAfter2005, p => p.Title, q => q.Title, (p, q) => p);
 
+        }
+
+        public IEnumerable<Book> BooksAfter2005WithMoreThan500Pages2()
+        {
+            // query method 1
+            //return (from book in booksCollection
+            //        where book.PageCount > 500
+            //        join book2 in booksCollection
+            //        on book.Title equals book2.Title
+            //        where book2.PublishedDate.Year > 2005
+            //        select book);
+
+            // query method 2
+            var result = from booksAfter2005 in booksCollection
+                         join booksPublishedAfter2005 in booksCollection
+                         on booksAfter2005.Title equals booksPublishedAfter2005.Title
+                         where booksAfter2005.PageCount >= 500 && booksPublishedAfter2005.PublishedDate.Year > 2005
+                         select booksAfter2005;
+
+            return result;
+        }
     }
 }
 

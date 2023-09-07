@@ -82,8 +82,38 @@ namespace linqAll
             //Console.WriteLine(queries.AverageOfCharsOftitle());
 
             // quest 21
-            PrintGroup(queries.BooksAfter2000GroupedByYear());
+            //PrintGroup(queries.BooksAfter2000GroupedByYear());
 
+            // quest 22 - GroupBy (from repl.it
+            //animals.GropingAnimalsByColor();
+
+            // quest 23 - Lookup
+            //var booksLocal = queries.BookDictionaryByStartingChar();
+            //PrintDictionary(booksLocal, 'P');
+
+            // quest 24 - Join
+            //PrintValues(queries.BooksAfter2005WithMoreThan500Pages());
+            PrintValues(queries.BooksAfter2005WithMoreThan500Pages2());
+
+
+        }
+
+
+        static void PrintDictionary(ILookup<char, Book> bookList, char letterLocal)
+        {
+            char upperLetter = Char.ToUpper(letterLocal);
+            if (bookList[upperLetter].Count() == 0)
+            {
+                Console.WriteLine($"No books starting with: '{upperLetter}'");
+            }
+            else
+            {
+                Console.WriteLine("{0, -60} {1, 15} {2, 15}\n", "Title", "N. Pages", "Published Date");
+                foreach (var book in bookList[upperLetter])
+                {
+                    Console.WriteLine("{0, -60} {1, 15} {2, 15}", book.Title, book.PageCount, book.PublishedDate.ToShortDateString());
+                }
+            }
         }
 
         static void PrintGroup(IEnumerable<IGrouping<int, Book>> booksCollection)

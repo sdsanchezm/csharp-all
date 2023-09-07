@@ -143,25 +143,10 @@
 - Sum
 - Agreegate
 - Average
-- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- GroupBy
+- Lookup
+- Join
+- Examples/Code on [sdsanchezm/csharp-all/LINQ-ALL]
 
 
 
