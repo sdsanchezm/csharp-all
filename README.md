@@ -92,7 +92,10 @@ Csharp Learning process
 
     // appsettings.json
     "ConnectionStrings": {
-        "TaskDb" :"Server=postgreServer;Database=StringEF;Port=5430;Username =my_user;Password=root;Host=localhost;"
+        "TaskDb" :"Server=postgreServer;Database=StringEF;Port=5430;Username =my_user;Password=root;Host=localhost;",
+        "DefaultConnection2": "Data Source=KRAUSP52\\SQLEXPRESS;Initial Catalog=pokeDB1;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
+        "connString1": "Data Source=KRAUSP52\\SQLEXPRESS;Initial Catalog=ToDosDataB1;Trusted_Connection=True;TrustServerCertificate=true;",
+        "DefaultConnection2": "Data source=dbtest1.db"
     }
         ```
 
