@@ -64,6 +64,11 @@ namespace techTest1
             x2.countUpperCaseLetters1();
             x2.countSymbols();
 
+            int[] array1 = {2,4,6,8,10};
+            var counting1 = new countingNumbers(array1);
+            counting1.Count1();
+            counting1.Count3();
+
         }
     }
 }
