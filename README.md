@@ -138,8 +138,32 @@ Csharp Learning process
 - Migrations should be used in dev, is very difficult once the app is in production
 
 
+## Blazor webassembly
 
+- from cli
+    - `dotnet new blazorwasm`
+    - `dotnet build`
+    - `dotnet run`
 
+- `@page` : Ruta por donde va a ser accedido el componente.
+- `<PageTitle>` Titulo de la pagina que aparece en el navegador.
+- `@code{ }` Para escribir código C#, es el identificador para cuando se compile la aplicación; para dar notación que se refiere a C#.
+- Example:
+    - ```cs
+        @page "/counter"
+        <PageTitle>Counter</PageTitle>
+        <h1>Counter</h1>
+        <p role="status">Current count: @currentCount</p>
+        <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+        @code {
+            private int currentCount = 0;
+            private void IncrementCount()
+            {
+                currentCount++;
+            }
+        }
+    ```
 
 
 

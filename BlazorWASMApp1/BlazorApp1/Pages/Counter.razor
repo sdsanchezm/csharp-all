@@ -1,0 +1,53 @@
+﻿@page "/counter/{currentCountParameter?}"
+@inject ILogger<Counter> logger;
+
+<TitleComponentCustom TitleNew="Super Component Here!"></TitleComponentCustom>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private int currentCount = 0;
+
+    [Parameter]
+    public string? currentCountParameter { get; set; }
+
+    [SupplyParameterFromQuery]
+    [Parameter]
+    public string? CounterFromQuery { get; set; }
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        if (parameters.TryGetValue<string>(nameof(currentCountParameter), out var value) && value is not null)
+        {
+
+            currentCountParameter = value;
+        }
+
+        await base.SetParametersAsync(parameters);
+    }
+
+    protected override void OnParametersSet()
+    {
+        logger.LogInformation("parameters are sent");
+        Console.WriteLine("hallo aus OnParametersSet");
+    }
+
+    protected override void OnInitialized()
+    {
+        //currentCount = CounterFromQuery != null ? int.Parse(CounterFromQuery) : 0;
+        currentCount = currentCountParameter != null ? int.Parse(currentCountParameter) : 0;
+        logger.LogInformation("Component is initialized");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        logger.LogInformation("this happen after component is initialized");
+    }
+}

@@ -1,0 +1,23 @@
+﻿@page "/"
+@inject IConfiguration config;
+
+<PageTitle>Index</PageTitle>
+
+<TitleComponentCustom TitleNew="blazor component title here"></TitleComponentCustom>
+
+<TitleComponentCustom TitleNew="@MessageFromAppSettings"></TitleComponentCustom>
+
+
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code{
+    public string MessageFromAppSettings = "";
+
+    protected override void OnInitialized()
+    {
+        MessageFromAppSettings = config["temp1"];
+    }
+}
