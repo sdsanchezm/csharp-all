@@ -165,8 +165,17 @@ Csharp Learning process
         }
     ```
 
+## Misc Links
+### MH Excercises
 
+- [https://github.com/sheapa/StringExercises]
+- [https://github.com/mossykazemi/CS-SolutionExamples/blob/master/Solution14/Program.cs]
 
+### wpf course
 
+- [https://github.com/OakAcademy/WPFPersonalTracking/blob/main/WPFPersonalTracking/WPFPersonalTracking/DB/Department.cs]
 
+### MS learning applied skills certs
+
+- [https://learn.microsoft.com/en-us/credentials/browse/?credential_types=applied%20skills]
 
