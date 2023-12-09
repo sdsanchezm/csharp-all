@@ -179,3 +179,18 @@ Csharp Learning process
 
 - [https://learn.microsoft.com/en-us/credentials/browse/?credential_types=applied%20skills]
 
+### MISC Link
+
+- [https://www.go4expert.com/articles/c-sharp-tutorials/]
+- [https://dotnet.microsoft.com/en-us/languages/csharp]
+- [https://www.tutorialsteacher.com/csharp]
+- [https://www.codecademy.com/learn/learn-c-sharp]
+- [https://www.geeksforgeeks.org/csharp-programming-language/]
+- [https://www.c-sharpcorner.com/]
+- [https://dotnettutorials.net/lesson/dotnet-framework/]
+- [https://codewithmosh.com/]
+
+
+
+
+
