@@ -179,7 +179,7 @@ Csharp Learning process
 
 - [https://learn.microsoft.com/en-us/credentials/browse/?credential_types=applied%20skills]
 
-### MISC Link
+### MISC Resources
 
 - [https://www.go4expert.com/articles/c-sharp-tutorials/]
 - [https://dotnet.microsoft.com/en-us/languages/csharp]
@@ -189,6 +189,15 @@ Csharp Learning process
 - [https://www.c-sharpcorner.com/]
 - [https://dotnettutorials.net/lesson/dotnet-framework/]
 - [https://codewithmosh.com/]
+- [https://help.syncfusion.com/wpf/datagrid/styles-and-templates]
+- [https://wpf-tutorial.com/wpf-application/resources/]
+
+
+### MISC ghs
+
+- [https://github.com/CSharpDesignPro/WPF---Responsive-UI-Design]
+- [https://github.com/TacticDevGit/Record-Book-App-WPF-MVVM]
+- [https://github.com/rmsmech/Tutorials/tree/master/WPF]
 
 
 
