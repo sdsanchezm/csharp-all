@@ -28,6 +28,12 @@ Csharp Learning process
 - Many to Many relationship 
     - [https://www.learnentityframeworkcore.com/configuration/many-to-many-relationship-configuration]
 
+## Dotnet Installation
+
+- Dotnet 7
+    - (https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+    - `winget install Microsoft.DotNet.SDK.8`
+
 
 ## Entity Framework
 
